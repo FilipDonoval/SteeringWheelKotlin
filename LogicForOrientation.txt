@@ -1,0 +1,6 @@
+WORKING:
+https://github.com/kplatfoot/android-rotation-sensor-sample/tree/kotlin
+AttitudeIndicator.kt is not needed
+
+didn't try:
+https://github.com/Steelzen/BubbleLevelIndicator/tree/main
