@@ -38,6 +38,7 @@ class MainActivity : ComponentActivity(), Orientation.Listener {
     val jsonData = JSONObject("""{
         "steering": 0,
         "throttle": 0,
+        "brake": 0,
         "gearUp": 0,
         "gearDown": 0
     }""")
@@ -100,10 +101,11 @@ class MainActivity : ComponentActivity(), Orientation.Listener {
     }
 
 
-    fun jsonChangeThrottle(throttlePos: Float)
+    fun jsonChangeThrottle(throttlebrake: String, throttlePos: Float)
     {
-        Log.d("fdsjklfsadkjl","$throttlePos")
-        jsonData.put("throttle", throttlePos)
+        //Log.d("fdsjklfsadkjl","$throttlePos")
+        //jsonData.put("throttle", throttlePos)
+        jsonData.put(throttlebrake, throttlePos)
         sendJson()
     }
 
@@ -142,7 +144,7 @@ fun buton(modifier: Modifier = Modifier, gearChange: (updown: String, state: Int
 
         onClick = { Log.d("PhoneInput", "10") },
         modifier = Modifier
-            .offset(100.dp, 100.dp)
+            .offset(100.dp, 250.dp)
             .pointerInteropFilter { event ->
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
@@ -165,7 +167,7 @@ fun buton(modifier: Modifier = Modifier, gearChange: (updown: String, state: Int
 
         onClick = { Log.d("PhoneInput", "10") },
         modifier = Modifier
-            .offset(100.dp, 200.dp)
+            .offset(100.dp, 350.dp)
             .pointerInteropFilter { event ->
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
@@ -189,23 +191,39 @@ fun buton(modifier: Modifier = Modifier, gearChange: (updown: String, state: Int
 
 
 @Composable
-fun SliderExample(throttleChange: (throttlePos: Float) -> Unit) {
-    var sliderValue by remember {mutableStateOf(0f)}
-
+fun SliderExample(throttleChange: (throttlebrake: String, throttlePos: Float) -> Unit) {
+    var sliderThrottle by remember {mutableStateOf(0f)}
+    var sliderBrake by remember {mutableStateOf(0f)}
 
     Slider(
-        value = sliderValue,
+        value = sliderThrottle,
         valueRange = 0f..255f,
         onValueChange = {
-            sliderValue = it
-            throttleChange(sliderValue)
+            sliderThrottle = it
+            throttleChange("throttle", sliderThrottle)
         },
         onValueChangeFinished = {
-            sliderValue = 0f
-            throttleChange(sliderValue)
+            sliderThrottle = 0f
+            throttleChange("throttle", sliderThrottle)
         },
         modifier = Modifier
             .offset(0.dp,550.dp)
+            .padding(70.dp)
+    )
+
+    Slider(
+        value = sliderBrake,
+        valueRange = 0f..255f,
+        onValueChange = {
+            sliderBrake = it
+            throttleChange("brake", sliderBrake)
+        },
+        onValueChangeFinished = {
+            sliderBrake = 0f
+            throttleChange("brake", sliderBrake)
+        },
+        modifier = Modifier
+            .offset(0.dp,100.dp)
             .padding(70.dp)
     )
 
